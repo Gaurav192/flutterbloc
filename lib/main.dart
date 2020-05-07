@@ -26,18 +26,19 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       home: Scaffold(
-      body: Padding(
+        body: Padding(
           padding: EdgeInsets.all(20.0),
-          child: BlocProvider(create: (context) => SevadetailBloc(),
-          child: MyHomePage(),),
-      ),
+          child: BlocProvider(
+            create: (context) => SevadetailBloc(),
+            child: MyHomePage(),
+          ),
+        ),
       ),
     );
   }
 }
 
-
-class MyHomePage extends StatefulWidget{
+class MyHomePage extends StatefulWidget {
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
@@ -47,13 +48,12 @@ class _MyHomePageState extends State<MyHomePage> {
 
   List<SevaName> sevadetails = new List<SevaName>();
 
-  String value = 'usa';
+  // String value = 'usa'; Don't use value which doesn't exist in dropdown list
+  String value; //Better to initialize with null
 
   String buttonvaluetext = '';
 
-  String sevadetailtext = '',
-      buttonvalue1 = '';
-
+  String sevadetailtext = '', buttonvalue1 = '';
 
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _gothramController = TextEditingController();
@@ -79,7 +79,6 @@ class _MyHomePageState extends State<MyHomePage> {
     _gothramController.addListener(_ongothramChanged);
   }
 
-
   String buttonvalue() {
     for (var seva in sevadetails) {
       if (seva.sevaname == value) {
@@ -90,7 +89,6 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
-
   String sevatextdetail() {
     for (var seva in sevadetails) {
       if (seva.sevaname == value) {
@@ -99,7 +97,6 @@ class _MyHomePageState extends State<MyHomePage> {
       }
     }
   }
-
 
   @override
   void dispose() {
@@ -112,23 +109,20 @@ class _MyHomePageState extends State<MyHomePage> {
     // TODO: implement build
     return BlocBuilder<SevadetailBloc, SevadetailState>(
       builder: (context, state) {
-        if() {}
-      }
-        Column(
+        //   if() {}
+        // }
+        return Column(
           children: <Widget>[
             TextFormField(
               controller: _nameController,
-              decoration: InputDecoration(
-                  labelText: 'Enter your username'
-              ),
+              decoration: InputDecoration(labelText: 'Enter your username'),
             ),
             TextFormField(
               controller: _gothramController,
-              decoration: InputDecoration(
-                  labelText: 'Enter your gothram'
-              ),
+              decoration: InputDecoration(labelText: 'Enter your gothram'),
             ),
             DropdownButton<String>(
+              value: value, //Assign value
               icon: Icon(Icons.arrow_drop_down),
               iconSize: 24,
               elevation: 16,
@@ -138,12 +132,15 @@ class _MyHomePageState extends State<MyHomePage> {
                 color: Colors.deepPurpleAccent,
               ),
               onChanged: (String data) {
-                setState() {
+                // setState() {
+                //   value = data;
+                // }; Parenthesis was missing
+                setState(() {
                   value = data;
-                }
+                });
               },
-              items: sevadetails.map<DropdownMenuItem<String>>((
-                  SevaName value) {
+              items:
+                  sevadetails.map<DropdownMenuItem<String>>((SevaName value) {
                 return DropdownMenuItem<String>(
                   value: value.sevaname,
                   child: Text(value.sevaname),
@@ -160,9 +157,7 @@ class _MyHomePageState extends State<MyHomePage> {
               lastDate: DateTime(2021),
             ),
             Text('Selected Item = ' + '$sevadetailtext',
-                style: TextStyle
-                  (fontSize: 22,
-                    color: Colors.black)),
+                style: TextStyle(fontSize: 22, color: Colors.black)),
             MaterialButton(
               child: Text('$buttonvalue1'),
               shape: Border.all(width: 2.0, color: Colors.redAccent),
